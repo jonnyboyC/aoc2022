@@ -1,0 +1,22 @@
+import std.io.fs:{File};
+
+let data = File.readAllText('input.txt')
+  .split('\n')
+  .into(List.collect);
+
+fn solution1(data) {
+  let calories = [Number.parse(data[0])];
+
+  for entry in data.slice(1) {
+    if entry == '' {
+      calories.push(0);
+      continue;
+    }
+
+    calories[calories.len() - 1] += Number.parse(entry);
+  }
+
+  calories.sort(|a, b| a - b).iter().last()
+}
+
+print(solution1(data));
