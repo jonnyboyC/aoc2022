@@ -4,7 +4,7 @@ let data = File.readAllText('input.txt')
   .split('\n')
   .into(List.collect);
 
-fn solution1(data) {
+fn sort_elves(data) {
   let calories = [Number.parse(data[0])];
 
   for entry in data.slice(1) {
@@ -16,7 +16,16 @@ fn solution1(data) {
     calories[calories.len() - 1] += Number.parse(entry);
   }
 
-  calories.sort(|a, b| a - b).iter().last()
+  calories.sort(|a, b| a - b)
+}
+
+fn solution1(data) {
+  sort_elves(data).iter().last()
+}
+
+fn solution2(data) {
+  sort_elves(data).rev().iter().take(3).reduce(0, |a, b| a + b)
 }
 
 print(solution1(data));
+print(solution2(data));
