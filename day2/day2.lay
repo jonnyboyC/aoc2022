@@ -1,0 +1,45 @@
+import std.io.fs:{File};
+import std.math:{rem};
+
+class Commands {
+  init(first, second) {
+    @first = first;
+    @second = second;
+  }
+
+  score1() {
+    let pos = {
+      'A': 1, 'X': 1,
+      'B': 2, 'Y': 2,
+      'C': 3, 'Z': 3,
+    };
+
+    let score = {
+      -2: 6,
+      -1: 0,
+      0: 3,
+      1: 6,
+      2: 0
+    };
+
+    let firstPosition = pos[@first];
+    let secondPosition = pos[@second];
+
+    score[secondPosition - firstPosition] + secondPosition
+  }
+
+  str() {
+    '${@first} ${@second}'
+  }
+}
+
+let data = File.readAllText('input.txt')
+  .split('\n')
+  .map(|x| {
+    let commands = x.split(' ').into(List.collect);
+
+    Commands(commands[0], commands[1])
+  })
+  .into(List.collect);
+
+print(data.iter().map(|x| x.score1()).reduce(0, |a, b| a + b));
