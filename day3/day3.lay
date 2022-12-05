@@ -1,0 +1,65 @@
+import std.io.fs:{File};
+
+let priority = {
+  'a': 1,  'A': 27,
+  'b': 2,  'B': 28,
+  'c': 3,  'C': 29,
+  'd': 4,  'D': 30,
+  'e': 5,  'E': 31,
+  'f': 6,  'F': 32,
+  'g': 7,  'G': 33,
+  'h': 8,  'H': 34,
+  'i': 9,  'I': 35,
+  'j': 10, 'J': 36,
+  'k': 11, 'K': 37,
+  'l': 12, 'L': 38,
+  'm': 13, 'M': 39,
+  'n': 14, 'N': 40,
+  'o': 15, 'O': 41,
+  'p': 16, 'P': 42,
+  'q': 17, 'Q': 43,
+  'r': 18, 'R': 44,
+  's': 19, 'S': 45,
+  't': 20, 'T': 46,
+  'u': 21, 'U': 47,
+  'v': 22, 'V': 48,
+  'w': 23, 'W': 49,
+  'x': 24, 'X': 50,
+  'y': 25, 'Y': 51,
+  'z': 26, 'Z': 52,
+};
+
+fn error(msg) {
+  print(msg);
+  1/0;
+}
+
+class RuckSack {
+  init(comp1, comp2) {
+    @comp1 = comp1;
+    @comp2 = comp2;
+  }
+
+  score1() {
+    for l in @comp1 {
+      if @comp2.has(l) {
+        return priority[l];
+      }
+    }
+
+    error("Did not find match");
+  }
+
+  str() {
+    'comp1: ${@comp1} comp2: ${@comp2}'
+  }
+}
+
+let data = File.readAllText('input.txt')
+  .split('\n')
+  .map(|x| {
+    RuckSack(x.slice(0, x.len() / 2), x.slice(x.len() / 2))
+  })
+  .into(List.collect);
+
+print(data.iter().reduce(0, |sum, x| sum + x.score1()));
