@@ -51,15 +51,37 @@ class RuckSack {
   }
 
   str() {
-    'comp1: ${@comp1} comp2: ${@comp2}'
+    '${@comp1}${@comp2}'
   }
 }
 
-let data = File.readAllText('input.txt')
-  .split('\n')
-  .map(|x| {
-    RuckSack(x.slice(0, x.len() / 2), x.slice(x.len() / 2))
-  })
-  .into(List.collect);
+fn solution1(elves) {
+  elves.iter().reduce(0, |sum, x| sum + x.score1())
+}
 
-print(data.iter().reduce(0, |sum, x| sum + x.score1()));
+fn solution2(elves) {
+  let sum = 0;
+
+  (elves.len() / 3).times().each(|i| {
+    let e1 = elves[i * 3];
+    let e2 = elves[i * 3 + 1];
+    let e3 = elves[i * 3 + 2];
+
+    for l in e1.str() {
+      if e2.str().has(l) and e3.str().has(l) {
+        sum += priority[l];
+        break;
+      }
+    }
+  });
+
+  sum
+}
+
+let elves = File.readAllText('input.txt')
+  .split('\n')
+  .map(|x| RuckSack(x.slice(0, x.len() / 2), x.slice(x.len() / 2)))
+  .list();
+
+print(solution1(elves));
+print(solution2(elves));
